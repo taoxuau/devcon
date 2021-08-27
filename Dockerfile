@@ -29,9 +29,9 @@ RUN set -ex \
   # powerlevel10k
   && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k \
   && sed -i -e 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/g' ~/.zshrc \
-  && curl -o ~/.p10k.zsh https://gist.githubusercontent.com/taoxuau/b6f2ec99ef67fcab3597d46fdb972ef1/raw/p10k.zsh \
-  && P10KHEADER=$(curl   https://gist.githubusercontent.com/taoxuau/b6f2ec99ef67fcab3597d46fdb972ef1/raw/p10k.header.zshrc) \
-  && P10KFOOTER=$(curl   https://gist.githubusercontent.com/taoxuau/b6f2ec99ef67fcab3597d46fdb972ef1/raw/p10k.footer.zshrc) \
+  && curl -o ~/.p10k.zsh https://raw.githubusercontent.com/taoxuau/devcon/master/p10k.zsh \
+  && P10KHEADER=$(curl   https://raw.githubusercontent.com/taoxuau/devcon/master/p10k.header.zshrc) \
+  && P10KFOOTER=$(curl   https://raw.githubusercontent.com/taoxuau/devcon/master/p10k.footer.zshrc) \
   && echo "$P10KHEADER\n" | cat - ~/.zshrc > /tmp/myzshrc && mv /tmp/myzshrc ~/.zshrc \
   && echo "\n$P10KFOOTER" >> ~/.zshrc \
   && ~/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/install -f \
