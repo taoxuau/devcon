@@ -19,7 +19,7 @@ ARG USER=devops
 RUN adduser --gecos '' --disabled-password --shell /usr/bin/zsh $USER \
   && echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
 USER $USER
-ENV USER=$USER SHELL=/usr/bin/zsh
+ENV TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
 WORKDIR /home/$USER
 
 # setup development environment
