@@ -6,4 +6,4 @@ services:
       context: .
       args:
         USER: devops
-
+        RUBY: 2.7.4

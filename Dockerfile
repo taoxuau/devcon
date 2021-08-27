@@ -5,10 +5,10 @@ RUN set -ex \
   && yes | unminimize \
   && apt-get update \
   && apt-get upgrade --yes \
-  && apt-get install --yes man sudo curl locales htop procps lsb-release vim nano \
-                           git openssh-client dumb-init build-essential zsh \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+  && apt-get install --yes man sudo curl locales htop procps lsb-release vim nano git openssh-client dumb-init build-essential zsh \
+  # ruby-build
+  && apt-get install --yes autoconf bison libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev \
+  && apt-get clean
 
 # https://wiki.debian.org/Locale#Manually
 RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen && locale-gen
@@ -23,9 +23,10 @@ ENV TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
 WORKDIR /home/$USER
 
 # setup development environment
+ARG RUBY=2.7.4
 RUN set -ex \
   # oh-my-zsh
-  && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
+  && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
   # powerlevel10k
   && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k \
   && sed -i -e 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/g' ~/.zshrc \
@@ -40,7 +41,16 @@ RUN set -ex \
   # zsh-syntax-highlighting
   && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
   # update plugins
-  && sed -i -e 's/^plugins=.*/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' ~/.zshrc
+  && sed -i -e 's/^plugins=.*/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' ~/.zshrc \
+  # rbenv
+  && git clone https://github.com/rbenv/rbenv.git ~/.rbenv \
+  && echo "\n# rbenv"  >> ~/.zshrc \
+  && echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc \
+  && echo 'eval "$(rbenv init -)"'  >> ~/.zshrc \
+  && mkdir -p ~/.rbenv/plugins \
+  && git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build \
+  && ~/.rbenv/bin/rbenv install $RUBY \
+  && ~/.rbenv/bin/rbenv local $RUBY
 
 # keep container running - https://stackoverflow.com/a/42873832/629950
 CMD ["tail", "-f", "/dev/null"]
