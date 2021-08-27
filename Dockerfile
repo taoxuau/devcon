@@ -52,6 +52,10 @@ RUN set -ex \
   && ~/.rbenv/bin/rbenv install $RUBY \
   && ~/.rbenv/bin/rbenv local $RUBY
 
+RUN set -ex \
+  # oh-my-zsh
+  && mkdir -p ~/.ssh
+
 # keep container running - https://stackoverflow.com/a/42873832/629950
 CMD ["tail", "-f", "/dev/null"]
 

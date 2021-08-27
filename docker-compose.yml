@@ -1,9 +1,13 @@
-version: '3.1'
+version: "3.1"
 services:
   devcon:
     image: taoxuau/devcon:2021
     build:
       context: .
       args:
-        USER: devops
-        RUBY: 2.7.4
+        - USER=devops
+        - RUBY=2.7.4
+    volumes:
+      # mapping ssh key
+      - ~/.ssh/id_rsa:/home/devops/.ssh/id_rsa
+      - ~/.ssh/id_rsa.pub:/home/devops/.ssh/id_rsa.pub
