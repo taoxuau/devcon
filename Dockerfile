@@ -47,4 +47,3 @@ CMD ["tail", "-f", "/dev/null"]
 
 # https://github.com/Yelp/dumb-init
 ENTRYPOINT ["dumb-init", "--"]
-
