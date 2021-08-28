@@ -26,6 +26,12 @@ set -ex \
 # as an rbenv plugin - https://github.com/rbenv/ruby-build
 set -ex \
   && mkdir -p ~/.rbenv/plugins \
-  && git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build \
-  && ~/.rbenv/bin/rbenv install $RUBY \
-  && ~/.rbenv/bin/rbenv local $RUBY
+  && git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+# ruby
+mapfile -t RUBY_VERSIONS < <(~/.rbenv/bin/rbenv install --list-all)
+if [[ -n ${RUBY} ]] && [[ ${RUBY_VERSIONS[*]} =~ ${RUBY} ]]; then
+  set -ex \
+    && ~/.rbenv/bin/rbenv install ${RUBY} \
+    && ~/.rbenv/bin/rbenv local ${RUBY}
+fi
