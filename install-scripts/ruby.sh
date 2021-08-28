@@ -19,8 +19,8 @@ set -ex \
 # ruby-build
 # dependencies - https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
 set -ex \
-  && apt-get update \
-  && apt-get install --yes autoconf bison libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
+  && sudo apt-get update \
+  && sudo apt-get install --yes autoconf bison libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
 
 # ruby-build
 # as an rbenv plugin - https://github.com/rbenv/ruby-build
