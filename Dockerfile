@@ -31,7 +31,7 @@ RUN set -ex && mkdir -p ~/.ssh \
   && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ohmyzsh-plugins.sh)"
 
 # rbenv and ruby
-ARG RUBY=2.7.4
+ARG RUBY
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ruby.sh)"
 
 # keep container running - https://stackoverflow.com/a/42873832/629950
