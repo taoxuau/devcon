@@ -6,6 +6,7 @@ services:
       context: .
       args:
         - USER=devops
+        - P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
         - RUBY=2.7.4
     volumes:
       # mapping ssh key
