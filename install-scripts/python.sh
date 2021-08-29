@@ -24,7 +24,7 @@ set -ex \
   && sudo apt-get install –-no-install-recommends --yes make build-essential libssl-dev \
     zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev \
     xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
-  && apt-get clean
+  && sudo apt-get clean
 
 # python
 mapfile -t PYTHON_VERSIONS < <(~/.pyenv/bin/pyenv install --list)
