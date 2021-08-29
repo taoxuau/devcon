@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 #
+# install oh-my-zsh and plugins
+#  - install oh-my-zsh
+#  - install zsh-autosuggestions
+#  - install zsh-syntax-highlighting
+#
+PLUGINS=(git zsh-autosuggestions zsh-syntax-highlighting)
+
+set -ex \
+  && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
+  && git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+  && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
+  && sed -i -e "s/^plugins=.*/plugins=(${PLUGINS[*]})/g" ~/.zshrc
+
 # install and configure powerlevel10k
 #  - install powerlevel10k
 #  - use .p10k.zsh from $P10KZSH (default = https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh)

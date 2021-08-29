@@ -19,16 +19,11 @@ RUN adduser --gecos '' --disabled-password --shell /usr/bin/zsh $USER \
 USER $USER
 ENV LANG=en_US.UTF-8 TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
 WORKDIR /home/$USER
+RUN set -ex && mkdir -p ~/.ssh
 
-# setup basic environment
+# oh-my-zsh and plugins, powerlevel10k
 ARG P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
-RUN set -ex && mkdir -p ~/.ssh \
-  # oh-my-zsh
-  && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
-  # powerlevel10k
-  && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/powerlevel10k.sh)" \
-  # oh-my-zsh plugins
-  && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ohmyzsh-plugins.sh)"
+RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ohmyzsh.sh)"
 
 # rbenv and ruby
 ARG RUBY
