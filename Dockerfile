@@ -19,7 +19,6 @@ RUN adduser --gecos '' --disabled-password --shell /usr/bin/zsh $USER \
 USER $USER
 ENV LANG=en_US.UTF-8 TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
 WORKDIR /home/$USER
-RUN set -ex && mkdir -p ~/.ssh
 
 # oh-my-zsh and plugins, powerlevel10k
 ARG P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
@@ -32,6 +31,9 @@ RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/d
 # pyenv and python
 ARG PYTHON
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/python.sh)"
+
+# other preparation
+RUN set -ex && mkdir -p ~/.ssh
 
 # keep container running - https://stackoverflow.com/a/42873832/629950
 CMD ["tail", "-f", "/dev/null"]
