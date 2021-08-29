@@ -5,10 +5,11 @@ services:
     build:
       context: .
       args:
-        - P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
         - USER=devops
+        - P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
         - RUBY=2.7.4
-        - PYTHON=3.9.6
+        # - PYTHON=3.9.6
+        - NODE=14.17.5
     volumes:
       # mapping ssh key
       - ~/.ssh/id_rsa:/home/devops/.ssh/id_rsa
