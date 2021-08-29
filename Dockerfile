@@ -20,8 +20,7 @@ USER $USER
 ENV LANG=en_US.UTF-8 TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
 WORKDIR /home/$USER
 
-# oh-my-zsh and plugins, powerlevel10k
-ARG P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
+# oh-my-zsh and plugins
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ohmyzsh.sh)"
 
 # rbenv and ruby
@@ -31,6 +30,10 @@ RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/d
 # pyenv and python
 ARG PYTHON
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/python.sh)"
+
+# powerlevel10k
+ARG P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
+RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/powerlevel10k.sh)"
 
 # other preparation
 RUN set -ex && mkdir -p ~/.ssh

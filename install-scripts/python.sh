@@ -6,8 +6,8 @@
 #
 PYENV_ZSHRC=$(cat <<'EOF'
 # pyenv
-export PATH="$HOME/.pyenv/bin:${PATH}"
-export PATH="$HOME/.pyenv/shims:${PATH}"
+export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$HOME/.pyenv/shims:$PATH"
 eval "$(pyenv init -)"
 EOF
 )
