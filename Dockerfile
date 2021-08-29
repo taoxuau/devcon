@@ -31,6 +31,10 @@ RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/d
 ARG PYTHON
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/python.sh)"
 
+# nodenv and nodejs
+ARG NODE
+RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/node.sh)"
+
 # powerlevel10k
 ARG P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/powerlevel10k.sh)"
