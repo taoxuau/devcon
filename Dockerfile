@@ -5,7 +5,7 @@ RUN set -ex \
   && yes | unminimize \
   && apt-get update \
   && apt-get upgrade --yes \
-  && apt-get install --yes man sudo curl locales htop procps lsb-release vim nano git openssh-client dumb-init build-essential zsh \
+  && apt-get install –no-install-recommends --yes man sudo curl locales htop procps lsb-release vim nano git openssh-client dumb-init build-essential zsh \
   # https://serverfault.com/a/992421/542554
   && DEBIAN_FRONTEND=noninteractive apt-get install --yes tzdata \
   && apt-get clean \
@@ -33,6 +33,10 @@ RUN set -ex && mkdir -p ~/.ssh \
 # rbenv and ruby
 ARG RUBY
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ruby.sh)"
+
+# pyenv and python
+ARG PYTHON
+RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/python.sh)"
 
 # keep container running - https://stackoverflow.com/a/42873832/629950
 CMD ["tail", "-f", "/dev/null"]
