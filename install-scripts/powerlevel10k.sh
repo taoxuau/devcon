@@ -2,7 +2,7 @@
 #
 # install and configure powerlevel10k
 #  - install powerlevel10k
-#  - use .p10k.zsh from $P10KZSH (default = https://raw.githubusercontent.com/taoxuau/devcon/master/p10k.zsh)
+#  - use .p10k.zsh from $P10KZSH (default = https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh)
 #  - install gitstatusd manually to prevent "fetching gitstatusd" message
 #
 P10KHEADER=$(cat <<'EOF'

@@ -5,7 +5,7 @@ RUN set -ex \
   && yes | unminimize \
   && apt-get update \
   && apt-get upgrade --yes \
-  && apt-get install --yes –-no-install-recommends man sudo curl locales htop procps lsb-release vim nano git openssh-client dumb-init build-essential zsh \
+  && apt-get install --yes man sudo curl locales htop procps lsb-release vim nano git openssh-client dumb-init build-essential zsh \
   # https://serverfault.com/a/992421/542554
   && DEBIAN_FRONTEND=noninteractive apt-get install --yes tzdata \
   && apt-get clean \
