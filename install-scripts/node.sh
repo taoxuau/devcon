@@ -21,7 +21,7 @@ if [[ -n ${NODE} ]]; then
   # dependencies - https://github.com/nodenv/node-build/wiki#suggested-build-environment
   set -ex \
     && sudo apt-get update \
-    && sudo apt-get install --yes python3 g++ make \
+    && sudo apt-get install --no-install-recommends --yes python3 g++ make \
     && sudo apt-get clean
 
   # node-build
