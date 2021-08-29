@@ -6,18 +6,18 @@ RUN set -ex \
   && apt-get update \
   && apt-get upgrade --yes \
   && apt-get install --yes man sudo curl locales htop procps lsb-release vim nano git openssh-client dumb-init build-essential zsh \
-  && apt-get clean
-
-# https://wiki.debian.org/Locale#Manually
-RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen && locale-gen
-ENV LANG=en_US.UTF-8
+  # https://serverfault.com/a/992421/542554
+  && DEBIAN_FRONTEND=noninteractive apt-get install --yes tzdata \
+  && apt-get clean \
+  # https://wiki.debian.org/Locale#Manually
+  && sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen && locale-gen
 
 # non-root user with sudo privileges
 ARG USER=devops
 RUN adduser --gecos '' --disabled-password --shell /usr/bin/zsh $USER \
   && echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
 USER $USER
-ENV TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
+ENV LANG=en_US.UTF-8 TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
 WORKDIR /home/$USER
 
 # setup basic environment
