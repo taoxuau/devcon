@@ -12,6 +12,10 @@ RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/d
 ARG NODE
 RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/node.sh)"
 
+# jenv and java
+ARG JAVA
+RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/java.sh)"
+
 # other preparation
 RUN set -ex && mkdir -p ~/.ssh
 
