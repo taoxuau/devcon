@@ -2,10 +2,28 @@ FROM ubuntu:20.04
 
 # install essential packages
 RUN set -ex \
+  && yes | unminimize \
   && apt-get update \
   && apt-get upgrade --yes \
-  && apt-get install --yes dumb-init \
+  && apt-get install --yes dumb-init sudo curl locales vim git zsh \
+  # https://serverfault.com/a/992421/542554
+  && DEBIAN_FRONTEND=noninteractive apt-get install --yes tzdata \
   && apt-get clean
+
+# non-root user with sudo privileges
+ARG USER=devops
+RUN adduser --gecos '' --disabled-password --shell /usr/bin/zsh $USER \
+  && echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
+USER $USER
+ENV LANG=en_US.UTF-8 TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
+WORKDIR /home/$USER
+
+# oh-my-zsh and plugins
+RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ohmyzsh.sh)"
+
+# powerlevel10k
+ARG P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
+RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/powerlevel10k.sh)"
 
 # keep container running - https://stackoverflow.com/a/42873832/629950
 CMD ["tail", "-f", "/dev/null"]
