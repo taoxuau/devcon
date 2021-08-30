@@ -14,3 +14,9 @@ services:
       # mapping ssh key
       - ~/.ssh/id_rsa:/home/devops/.ssh/id_rsa
       - ~/.ssh/id_rsa.pub:/home/devops/.ssh/id_rsa.pub
+
+  ubuntu:
+    image: taoxuau/ubuntu:20.04
+    build:
+      context: .
+      dockerfile: Dockerfile.ubuntu

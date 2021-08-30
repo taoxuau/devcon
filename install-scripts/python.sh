@@ -15,7 +15,7 @@ EOF
 if [[ -n ${PYTHON} ]]; then
   # pyenv
   set -ex \
-    &&  git clone https://github.com/pyenv/pyenv.git ~/.pyenv \
+    && git clone https://github.com/pyenv/pyenv.git ~/.pyenv \
     && echo $'\n'"$PYENV_ZSHRC" >> ~/.zshrc
 
   # python-build
