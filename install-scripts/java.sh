@@ -26,11 +26,18 @@ if [[ -n ${JAVA} ]]; then
     && jenv enable-plugin export \
     && jenv enable-plugin maven
 
-  # install java and maven
-  set -ex \
-    && sudo apt-get install --no-install-recommends --yes openjdk-${JAVA}-jdk maven \
-    && jenv add /usr/lib/jvm/java-${JAVA}-openjdk-amd64/ \
-    && jenv versions | grep openjdk64 | xargs jenv local \
-    && jenv doctor \
-    && mvn --version
+  JAVA_VERSIONS=(8 11 13 16)
+  if [[ ${JAVA_VERSIONS[*]} =~ ${JAVA} ]]; then
+    # install java and maven
+    set -ex \
+      && sudo apt-get install --no-install-recommends --yes openjdk-${JAVA}-jdk maven \
+      && sudo apt-get clean
+
+    # configure jenv
+    set -ex \
+      && jenv add /usr/lib/jvm/java-${JAVA}-openjdk-amd64/ \
+      && jenv versions | grep openjdk64 | xargs jenv local \
+      && jenv doctor \
+      && mvn --version
+  fi
 fi
