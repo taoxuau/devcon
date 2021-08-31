@@ -42,8 +42,7 @@ if [[ -n ${JAVA} ]]; then
       set -ex \
         && jenv add /usr/lib/jvm/java-${SINGLE_JAVA}-openjdk-amd64/ \
         && jenv versions | grep openjdk64 | xargs jenv local \
-        && jenv doctor \
-        && mvn --version
+        && jenv doctor
     fi
   done
 
