@@ -30,11 +30,23 @@ if [[ -n ${NODE} ]]; then
     && mkdir -p ~/.nodenv/plugins \
     && git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
 
-  # nodejs
+  # available versions
   mapfile -t NODE_VERSIONS < <(~/.nodenv/bin/nodenv install --list)
-  if [[ ${NODE_VERSIONS[*]} =~ ${NODE} ]]; then
+
+  # install multiple node, e.g. NODE="12.22.5, 14.17.5"
+  IFS=, read -ra TO_INSTALL <<<${NODE}
+  for SINGLE_NODE in ${TO_INSTALL[@]}
+  do
+    if [[ ${NODE_VERSIONS[*]} =~ ${SINGLE_NODE} ]]; then
+      set -ex && ~/.nodenv/bin/nodenv install ${SINGLE_NODE}
+    fi
+  done
+
+  # configure nodenv - use the first version found
+  INSTALLED_VERSIONS=($(nodenv versions))
+  if [[ -n ${INSTALLED_VERSIONS[0]} ]]; then
     set -ex \
-      && ~/.nodenv/bin/nodenv install ${NODE} \
-      && ~/.nodenv/bin/nodenv local ${NODE}
+      && ~/.nodenv/bin/nodenv local ${INSTALLED_VERSIONS[0]} \
+      && ~/.nodenv/bin/nodenv versions
   fi
 fi
