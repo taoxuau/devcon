@@ -19,7 +19,7 @@ services:
         # - RUBY=2.7.4
         # - PYTHON=3.9.6
         # - NODE=12.22.5
-        - JAVA=11
+        - JAVA=8,11
     volumes:
       - ~/.ssh/id_rsa:/home/devops/.ssh/id_rsa
       - ~/.ssh/id_rsa.pub:/home/devops/.ssh/id_rsa.pub

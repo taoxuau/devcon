@@ -12,7 +12,7 @@ EOF
 )
 
 if [[ -n ${JAVA} ]]; then
-  # jenv
+  # install jenv
   set -ex \
     && git clone https://github.com/jenv/jenv.git ~/.jenv \
     && echo $'\n'"$JENV_ZSHRC" >> ~/.zshrc
@@ -26,18 +26,29 @@ if [[ -n ${JAVA} ]]; then
     && jenv enable-plugin export \
     && jenv enable-plugin maven
 
-  JAVA_VERSIONS=(8 11 13 16)
-  if [[ ${JAVA_VERSIONS[*]} =~ ${JAVA} ]]; then
-    # install java and maven
-    set -ex \
-      && sudo apt-get install --no-install-recommends --yes openjdk-${JAVA}-jdk maven \
-      && sudo apt-get clean
+  # install maven
+  set -ex \
+    && sudo apt-get update \
+    && sudo apt-get install --no-install-recommends --yes maven
 
-    # configure jenv
-    set -ex \
-      && jenv add /usr/lib/jvm/java-${JAVA}-openjdk-amd64/ \
-      && jenv versions | grep openjdk64 | xargs jenv local \
-      && jenv doctor \
-      && mvn --version
-  fi
+  # available versions
+  JAVA_VERSIONS=(8 11 13 16)
+  # install multiple java, e.g. JAVA="8,11"
+  IFS=, read -ra TO_INSTALL <<<${JAVA}
+  for SINGLE_JAVA in ${TO_INSTALL}
+  do
+    if [[ ${JAVA_VERSIONS[*]} =~ ${SINGLE_JAVA} ]]; then
+      # install java
+      set -ex && sudo apt-get install --no-install-recommends --yes openjdk-${JAVA}-jdk
+      # configure jenv
+      set -ex \
+        && jenv add /usr/lib/jvm/java-${SINGLE_JAVA}-openjdk-amd64/ \
+        && jenv versions | grep openjdk64 | xargs jenv local \
+        && jenv doctor \
+        && mvn --version
+    fi
+  done
+
+  # clean up
+  set -ex && sudo apt-get clean
 fi
