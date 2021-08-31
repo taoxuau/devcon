@@ -31,7 +31,7 @@ services:
       context: .
       dockerfile: Dockerfile.devcon
       args:
-        - NODE=14.17.5
+        - NODE=12.22.5, 14.17.5
     volumes:
       - ~/.ssh/id_rsa:/home/devops/.ssh/id_rsa
       - ~/.ssh/id_rsa.pub:/home/devops/.ssh/id_rsa.pub

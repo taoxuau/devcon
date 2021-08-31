@@ -12,10 +12,14 @@ EOF
 )
 
 if [[ -n ${NODE} ]]; then
-  # nodenv
+  # install nodenv
   set -ex \
     && git clone https://github.com/nodenv/nodenv.git ~/.nodenv \
     && echo $'\n'"$NODENV_ZSHRC" >> ~/.zshrc
+
+  # initialize nodenv
+  export PATH="$HOME/.nodenv/bin:$PATH"
+  eval "$(nodenv init -)"
 
   # node-build
   # dependencies - https://github.com/nodenv/node-build/wiki#suggested-build-environment
@@ -31,14 +35,14 @@ if [[ -n ${NODE} ]]; then
     && git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
 
   # available versions
-  mapfile -t NODE_VERSIONS < <(~/.nodenv/bin/nodenv install --list)
+  mapfile -t NODE_VERSIONS < <(nodenv install --list)
 
   # install multiple node, e.g. NODE="12.22.5, 14.17.5"
   IFS=, read -ra TO_INSTALL <<<${NODE}
   for SINGLE_NODE in ${TO_INSTALL[@]}
   do
     if [[ ${NODE_VERSIONS[*]} =~ ${SINGLE_NODE} ]]; then
-      set -ex && ~/.nodenv/bin/nodenv install ${SINGLE_NODE}
+      set -ex && nodenv install ${SINGLE_NODE}
     fi
   done
 
@@ -46,7 +50,7 @@ if [[ -n ${NODE} ]]; then
   INSTALLED_VERSIONS=($(nodenv versions))
   if [[ -n ${INSTALLED_VERSIONS[0]} ]]; then
     set -ex \
-      && ~/.nodenv/bin/nodenv local ${INSTALLED_VERSIONS[0]} \
-      && ~/.nodenv/bin/nodenv versions
+      && nodenv local ${INSTALLED_VERSIONS[0]} \
+      && nodenv versions
   fi
 fi
