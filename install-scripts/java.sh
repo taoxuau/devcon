@@ -10,6 +10,8 @@ export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 EOF
 )
+# available versions
+JAVA_VERSIONS=(8 11 13 16)
 
 if [[ -n ${JAVA} ]]; then
   # install jenv
@@ -29,22 +31,25 @@ if [[ -n ${JAVA} ]]; then
   # apt-get update once
   set -ex && sudo apt-get update
 
-  # available versions
-  JAVA_VERSIONS=(8 11 13 16)
   # install multiple java, e.g. JAVA="8,11"
   IFS=, read -ra TO_INSTALL <<<${JAVA}
-  for SINGLE_JAVA in ${TO_INSTALL}
+  for SINGLE_JAVA in ${TO_INSTALL[@]}
   do
     if [[ ${JAVA_VERSIONS[*]} =~ ${SINGLE_JAVA} ]]; then
       # install java
-      set -ex && sudo apt-get install --no-install-recommends --yes openjdk-${SINGLE_JAVA}-jdk
-      # configure jenv
       set -ex \
-        && jenv add /usr/lib/jvm/java-${SINGLE_JAVA}-openjdk-amd64/ \
-        && jenv versions | grep openjdk64 | xargs jenv local \
-        && jenv doctor
+        && sudo apt-get install --no-install-recommends --yes openjdk-${SINGLE_JAVA}-jdk \
+        && jenv add /usr/lib/jvm/java-${SINGLE_JAVA}-openjdk-amd64/
     fi
   done
+
+  # configure jenv - use the first version found
+  INSTALLED_VERSIONS=($(jenv versions | grep openjdk64))
+  if [[ -n ${INSTALLED_VERSIONS[0]} ]]; then
+    set -ex \
+      && jenv local ${INSTALLED_VERSIONS[0]} \
+      && jenv doctor
+  fi
 
   # install maven
   set -ex \
