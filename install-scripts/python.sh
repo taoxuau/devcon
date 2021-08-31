@@ -13,10 +13,15 @@ EOF
 )
 
 if [[ -n ${PYTHON} ]]; then
-  # pyenv
+  # install pyenv
   set -ex \
     && git clone https://github.com/pyenv/pyenv.git ~/.pyenv \
     && echo $'\n'"$PYENV_ZSHRC" >> ~/.zshrc
+
+  # initialize pyenv
+  export PATH="$HOME/.pyenv/bin:$PATH"
+  export PATH="$HOME/.pyenv/shims:$PATH"
+  eval "$(pyenv init -)"
 
   # python-build
   # dependencies - https://github.com/pyenv/pyenv/wiki#suggested-build-environment
@@ -28,13 +33,23 @@ if [[ -n ${PYTHON} ]]; then
     && sudo apt-get clean
 
   # available versions
-  mapfile -t PYTHON_VERSIONS < <(~/.pyenv/bin/pyenv install --list)
-  # remove the words "Available versions:" from list
-  unset PYTHON_VERSIONS[0]
-  # python
-  if [[ ${PYTHON_VERSIONS[*]} =~ ${PYTHON} ]]; then
+  mapfile -t PYTHON_VERSIONS < <(pyenv install --list)
+  unset PYTHON_VERSIONS[0] # remove the words "Available versions:" from list
+
+  # install multiple python, e.g. PYTHON="3.9.7, 3.8.12"
+  IFS=, read -ra TO_INSTALL <<<${PYTHON}
+  for SINGLE_PYTHON in ${TO_INSTALL[@]}
+  do
+    if [[ ${PYTHON_VERSIONS[*]} =~ ${SINGLE_PYTHON} ]]; then
+      set -ex && pyenv install ${SINGLE_PYTHON}
+    fi
+  done
+
+  # configure pyenv - use the first version found
+  INSTALLED_VERSIONS=($(pyenv versions))
+  if [[ -n ${INSTALLED_VERSIONS[0]} ]]; then
     set -ex \
-      && ~/.pyenv/bin/pyenv install ${PYTHON} \
-      && ~/.pyenv/bin/pyenv local ${PYTHON}
+      && pyenv local ${INSTALLED_VERSIONS[0]} \
+      && pyenv versions
   fi
 fi
