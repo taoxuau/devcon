@@ -26,10 +26,8 @@ if [[ -n ${JAVA} ]]; then
     && jenv enable-plugin export \
     && jenv enable-plugin maven
 
-  # install maven
-  set -ex \
-    && sudo apt-get update \
-    && sudo apt-get install --no-install-recommends --yes maven
+  # apt-get update once
+  set -ex && sudo apt-get update
 
   # available versions
   JAVA_VERSIONS=(8 11 13 16)
@@ -39,7 +37,7 @@ if [[ -n ${JAVA} ]]; then
   do
     if [[ ${JAVA_VERSIONS[*]} =~ ${SINGLE_JAVA} ]]; then
       # install java
-      set -ex && sudo apt-get install --no-install-recommends --yes openjdk-${JAVA}-jdk
+      set -ex && sudo apt-get install --no-install-recommends --yes openjdk-${SINGLE_JAVA}-jdk
       # configure jenv
       set -ex \
         && jenv add /usr/lib/jvm/java-${SINGLE_JAVA}-openjdk-amd64/ \
@@ -49,6 +47,8 @@ if [[ -n ${JAVA} ]]; then
     fi
   done
 
-  # clean up
-  set -ex && sudo apt-get clean
+  # install maven
+  set -ex \
+    && sudo apt-get install --no-install-recommends --yes maven \
+    && sudo apt-get clean
 fi
