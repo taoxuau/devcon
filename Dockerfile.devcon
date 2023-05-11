@@ -1,4 +1,4 @@
-FROM taoxuau/ubuntu:20.04
+FROM --platform=linux/amd64 taoxuau/ubuntu:22.04
 
 # rbenv and ruby
 ARG RUBY
