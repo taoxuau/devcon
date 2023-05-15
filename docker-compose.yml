@@ -3,15 +3,16 @@ services:
   # base - ubuntu with zsh
   ubuntu:
     container_name: ubuntu
-    image: taoxuau/ubuntu:22.04
-    platform: linux/amd64
+    image: taoxuau/ubuntu:22.04.${ARCH}
+    platform: linux/${ARCH}
     build:
       context: .
       platforms:
-        - linux/amd64
+        - linux/${ARCH}
       dockerfile: Dockerfile.ubuntu
       args:
         # Use default value in Dockerfile, or specify your value here
+        - ARCH=${ARCH}
         - USER=devops
         - P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
 
@@ -42,15 +43,16 @@ services:
   # ruby
   ruby:
     container_name: ruby
-    image: taoxuau/devcon:ruby.2023
-    platform: linux/amd64
+    image: taoxuau/devcon:ruby.2023.${ARCH}
+    platform: linux/${ARCH}
     build:
       context: .
       platforms:
-        - linux/amd64
+        - linux/${ARCH}
       dockerfile: Dockerfile.devcon
       args:
-        - RUBY=2.7.8, 3.1.4
+        - ARCH=${ARCH}
+        - RUBY=3.1.4, 2.7.8
     volumes:
       - ~/.ssh/id_rsa:/home/devops/.ssh/id_rsa
       - ~/.ssh/id_rsa.pub:/home/devops/.ssh/id_rsa.pub

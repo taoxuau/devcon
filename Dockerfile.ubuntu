@@ -1,4 +1,5 @@
-FROM --platform=linux/amd64 ubuntu:22.04
+ARG ARCH=amd64
+FROM --platform=linux/$ARCH ubuntu:22.04
 
 # install essential packages
 RUN set -ex \
