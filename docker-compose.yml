@@ -13,8 +13,23 @@ services:
       args:
         # Use default value in Dockerfile, or specify your value here
         - ARCH=${ARCH}
-        - USER=devops
-        - P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
+        - USER=${DEFAULT_USER}
+        - P10KZSH=${P10KZSH}
+
+  # base - almalinux with zsh
+  almalinux:
+    container_name: almalinux
+    image: taoxuau/almalinux:8.${ARCH}
+    platform: linux/${ARCH}
+    build:
+      context: .
+      platforms:
+        - linux/${ARCH}
+      dockerfile: Dockerfile.almalinux
+      args:
+        - ARCH=${ARCH}
+        - USER=${DEFAULT_USER}
+        - P10KZSH=${P10KZSH}
 
   # java
   # devcon_java:

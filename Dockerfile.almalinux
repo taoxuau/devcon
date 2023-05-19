@@ -1,0 +1,26 @@
+ARG ARCH=amd64
+FROM --platform=linux/$ARCH almalinux:8
+
+# install essential packages
+RUN set -ex \
+  && dnf upgrade --assumeyes \
+  && dnf install --assumeyes sudo git zsh man \
+  && dnf clean all
+
+# non-root user with sudo privileges
+ARG USER=devops
+RUN adduser --shell /usr/bin/zsh $USER \
+  && echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
+USER $USER
+ENV LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 \
+  TERM=xterm-256color USER=$USER SHELL=/usr/bin/zsh
+WORKDIR /home/$USER
+
+# oh-my-zsh (with plugins) and powerlevel10k
+ARG P10KZSH=https://raw.githubusercontent.com/taoxuau/devcon/master/default-confs/p10k.zsh
+RUN set -ex \
+  && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/ohmyzsh.sh)" \
+  && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/devcon/master/install-scripts/powerlevel10k.sh)"
+
+# keep container running - https://stackoverflow.com/a/42873832/629950
+CMD ["tail", "-f", "/dev/null"]
