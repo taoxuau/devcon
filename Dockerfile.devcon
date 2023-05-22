@@ -20,9 +20,3 @@ RUN set -ex && bash -c "$(curl -fsSL https://raw.githubusercontent.com/taoxuau/d
 
 # other preparation
 RUN set -ex && mkdir -p ~/.ssh
-
-# keep container running - https://stackoverflow.com/a/42873832/629950
-CMD ["tail", "-f", "/dev/null"]
-
-# https://github.com/Yelp/dumb-init
-ENTRYPOINT ["dumb-init", "--"]
