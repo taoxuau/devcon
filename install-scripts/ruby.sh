@@ -26,7 +26,7 @@ install_almalinux_dependencies () {
   # dependencies - https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
   set -ex \
     && sudo dnf upgrade --assumeyes \
-    && sudo dnf install --assumeyes --enablerepo=powertools gcc make patch bzip2 \
+    && sudo dnf install --assumeyes --enablerepo=powertools gcc make patch bzip2 perl-IPC-Cmd \
       openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel \
     && sudo dnf clean all
 }
