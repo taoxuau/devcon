@@ -66,6 +66,7 @@ services:
         - linux/${ARCH}
       dockerfile: Dockerfile.devcon
       args:
+        - BASE=taoxuau/almalinux:8
         - ARCH=${ARCH}
         - RUBY=3.1.4, 2.7.8
     volumes:

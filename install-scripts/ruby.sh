@@ -11,6 +11,42 @@ eval "$(rbenv init -)"
 EOF
 )
 
+install_ubuntu_dependencies () {
+  # ruby-build
+  # dependencies - https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
+  set -ex \
+    && sudo apt-get update \
+    && sudo apt-get install --no-install-recommends --yes autoconf bison build-essential libssl-dev \
+      libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev \
+    && sudo apt-get clean
+}
+
+install_almalinux_dependencies () {
+  # ruby-build
+  # dependencies - https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
+  set -ex \
+    && sudo dnf upgrade --assumeyes \
+    && sudo dnf install --assumeyes --enablerepo=powertools gcc make patch bzip2 \
+      openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel \
+    && sudo dnf clean all
+}
+
+install_ruby_build_dependencies () {
+  DISTRO=$(source /etc/os-release && echo $ID)
+  case ${DISTRO} in
+    ubuntu)
+      install_ubuntu_dependencies
+      ;;
+    almalinux)
+      install_almalinux_dependencies
+      ;;
+    *)
+      echo "Unsupported distribution: ${DISTRO}"
+      exit 1
+      ;;
+  esac
+}
+
 if [[ -n ${RUBY} ]]; then
   # install rbenv
   set -ex \
@@ -22,15 +58,8 @@ if [[ -n ${RUBY} ]]; then
   eval "$(rbenv init -)"
 
   # ruby-build
-  # dependencies - https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
-  set -ex \
-    && sudo apt-get update \
-    && sudo apt-get install --no-install-recommends --yes autoconf bison build-essential libssl-dev \
-      libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev \
-    && sudo apt-get clean
-
-  # ruby-build
   # as an rbenv plugin - https://github.com/rbenv/ruby-build
+  install_ruby_build_dependencies
   set -ex \
     && mkdir -p ~/.rbenv/plugins \
     && git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
